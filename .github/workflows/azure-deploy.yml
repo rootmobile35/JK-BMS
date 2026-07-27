@@ -21,7 +21,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "/"
-          api_location: ""
+          api_location: "api"
           output_location: "dist"
         env: # ปิดระบบตรวจคำเตือนเข้มงวดเพื่อป้องกัน Build พัง
           CI: false
