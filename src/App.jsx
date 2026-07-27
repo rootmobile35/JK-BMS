@@ -35,18 +35,7 @@ function AuthedApp() {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const pages = PAGES.filter((p) => (p.adminOnly ? user.role === "admin" : !p.userOnly || user.role !== "admin"));
   const activePage = pages.find((p) => p.id === page) ? page : defaultPage;
-   useEffect(() => {
-    // 3. ทดสอบเปิดใช้งาน
-    socket.on("connect", () => {
-      console.log("Socket connected with ID:", socket.id);
-    });
-
-    return () => {
-      socket.off("connect");
-    };
-  }, []);
-
-  return <div>App Running</div>;
+ 
   return (
     <HubDataProvider>
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-1 px-3 pt-4 sm:px-5 md:px-7">
