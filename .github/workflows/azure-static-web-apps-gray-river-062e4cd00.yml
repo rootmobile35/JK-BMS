@@ -33,7 +33,7 @@ jobs:
           ###### End of Repository/Build Configurations ######
         env: # <<< 📍 ย้ายมาอยู่ตรงนี้ (เยื้องให้ตรงกับแนวคำว่า uses/with ด้านบน)
           CI: false
-          VITE_API_BASE_URL: https://gray-river-062e4cd00.7.azurestaticapps.net
+          VITE_API_BASE_URL: jk-server-api-gdh0g4ajehhvcfd3.southeastasia-01.azurewebsites.net
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
