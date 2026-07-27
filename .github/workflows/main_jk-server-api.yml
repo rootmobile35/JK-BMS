@@ -54,7 +54,7 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_388BE5FF582D48D2AA99E37895BF6BEC }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_FF6870FDA03A484C94983756C370C94A }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9FD86A91BA8D4184904CB1CA7969E9BB }}
-
+          audience: api://AzureADTokenExchange
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
