@@ -10,6 +10,7 @@ import { HubDataProvider } from "./context/HubDataContext.jsx";
 import { LogoutModal } from "./components/LogoutModal.jsx";
 import HomePage from './HomePage';
 import { BrowserRouter } from 'react-router-dom';
+import { io } from 'socket.io-client';
 const PAGES = [
   // Dashboard (live per-device telemetry + Configuration) is user-role only -
   // admin sessions only ever get Admin Monitor's fleet view, per explicit
@@ -23,7 +24,10 @@ const PAGES = [
   // requires requireRole('admin') regardless of what the frontend renders.
   { id: "admin", label: "Admin Monitor", icon: ShieldCheck, adminOnly: true },
 ];
-
+const socket = io(import.meta.env.VITE_API_BASE_URL, {
+  withCredentials: true,
+  transports: ["websocket"] 
+});
 function AuthedApp() {
   const { user, logout } = useAuth();
   const defaultPage = user.role === "admin" ? "admin" : "dashboard";
@@ -31,7 +35,18 @@ function AuthedApp() {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const pages = PAGES.filter((p) => (p.adminOnly ? user.role === "admin" : !p.userOnly || user.role !== "admin"));
   const activePage = pages.find((p) => p.id === page) ? page : defaultPage;
- 
+   useEffect(() => {
+    // 3. ทดสอบเปิดใช้งาน
+    socket.on("connect", () => {
+      console.log("Socket connected with ID:", socket.id);
+    });
+
+    return () => {
+      socket.off("connect");
+    };
+  }, []);
+
+  return <div>App Running</div>;
   return (
     <HubDataProvider>
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-1 px-3 pt-4 sm:px-5 md:px-7">
