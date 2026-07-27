@@ -8,10 +8,6 @@ import { isAllowedOrigin } from "./corsOrigin.js";
 
 const REST_POLL_MS = 5000;
 
-// Same role filtering as GET /api/hubs, but live: a non-admin socket only
-// ever reads the specific hub_id path its account owns - it can't receive
-// another user's hub even if the frontend were compromised, because the
-// server never reads that path for this connection in the first place.
 export function attachRealtime(httpServer) {
   const io = new Server(httpServer, {
     cors: {
@@ -21,6 +17,8 @@ export function attachRealtime(httpServer) {
       },
       credentials: true,
     },
+    // 🚀 เพิ่มบรรทัดนี้เพื่อบังคับให้รองรับทั้ง WebSocket และ Polling แบบจัดสรรสิทธิ์ล่วงหน้าบนระบบคลาวด์
+    transports: ["websocket", "polling"] 
   });
 
   io.use((socket, next) => {
@@ -35,14 +33,9 @@ export function attachRealtime(httpServer) {
     const allowed = allowedHubIds(socket.user);
     const cleanup = [];
 
-    // Lets admin-broadcast announcements (routes/announcements.js) target
-    // exactly the sessions that actually render the Dashboard/announcement
-    // banner - admin sessions don't need their own broadcast pushed back at
-    // them since they never see that page anymore.
     if (socket.user.role === "user") socket.join("role:user");
 
     if (isFirebaseConfigured) {
-      // True push via the Admin SDK.
       if (allowed === null) {
         const ref = adminDb.ref("JK_BMS_HUB");
         const cb = (snap) => socket.emit("hubs:all", snap.val() ?? {});
@@ -58,10 +51,6 @@ export function attachRealtime(httpServer) {
         }
       }
     } else {
-      // No Admin SDK key yet - plain REST has no push mechanism, so poll
-      // instead. Same role scoping as the push path above, just on a timer.
-      // Upgrades to true push automatically once the key is added and the
-      // backend restarts.
       if (allowed === null) {
         const tick = async () => socket.emit("hubs:all", (await readPath("JK_BMS_HUB")) ?? {});
         tick();
