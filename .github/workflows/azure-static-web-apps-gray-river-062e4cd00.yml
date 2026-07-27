@@ -46,3 +46,4 @@ jobs:
           action: "close"
     env: # <<< เพิ่ม 2 บรรทัดนี้เข้าไปครับ
           CI: false
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
