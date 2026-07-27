@@ -24,9 +24,9 @@ const PAGES = [
   // requires requireRole('admin') regardless of what the frontend renders.
   { id: "admin", label: "Admin Monitor", icon: ShieldCheck, adminOnly: true },
 ];
-const socket = io(import.meta.env.VITE_API_BASE_URL, {
+const socket = io(import.meta.env.VITE_API_BASE_URL || "https://jk-server-api-gdh0g4ajehhvcfd3.southeastasia-01.azurewebsites.net", {
   withCredentials: true,
-  transports: ["websocket"] 
+  transports: ["websocket"] // 🔒 บังคับใช้ท่อตรง WebSocket เท่านั้น ข้ามผ่าน HTTP 400 ของ Azure
 });
 function AuthedApp() {
   const { user, logout } = useAuth();
