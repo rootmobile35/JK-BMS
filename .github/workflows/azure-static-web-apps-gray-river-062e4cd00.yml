@@ -46,4 +46,4 @@ jobs:
           action: "close"
     env: # <<< เพิ่ม 2 บรรทัดนี้เข้าไปครับ
           CI: false
-          VITE_API_BASE_URL: jk-server-api-gdh0g4ajehhvcfd3.southeastasia-01.azurewebsites.net
+          VITE_API_BASE_URL: https://jk-server-api-gdh0g4ajehhvcfd3.southeastasia-01.azurewebsites.net
