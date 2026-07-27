@@ -28,7 +28,7 @@ jobs:
           action: "upload"
           ###### Repository/Build Configurations ######
           app_location: "/" 
-          api_location: "" 
+          api_location: "server" 
           output_location: "dist" 
           ###### End of Repository/Build Configurations ######
         env: # <<< 📍 ย้ายมาอยู่ตรงนี้ (เยื้องให้ตรงกับแนวคำว่า uses/with ด้านบน)
