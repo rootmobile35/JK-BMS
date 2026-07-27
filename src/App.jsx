@@ -24,9 +24,12 @@ const PAGES = [
   // requires requireRole('admin') regardless of what the frontend renders.
   { id: "admin", label: "Admin Monitor", icon: ShieldCheck, adminOnly: true },
 ];
-const socket = io(import.meta.env.VITE_API_BASE_URL || "https://jk-server-api-gdh0g4ajehhvcfd3.southeastasia-01.azurewebsites.net", {
+const socket = io("wss://jk-server-api-gdh0g4ajehhvcfd3.southeastasia-01.azurewebsites.net", {
   withCredentials: true,
-  transports: ["websocket"] // 🔒 บังคับใช้ท่อตรง WebSocket เท่านั้น ข้ามผ่าน HTTP 400 ของ Azure
+  transports: ["websocket"],       // 🔒 บังคับใช้ท่อ WebSocket เท่านั้น เพื่อข้ามผ่านเอเรอร์ HTTP 400
+  upgrade: false,                  // 🚫 ห้ามอัปเกรดโปรโตคอลสลับไปมา
+  reconnectionAttempts: 5,         // 🔁 พยายามเชื่อมต่อใหม่ 5 ครั้งหากหลุด
+  timeout: 10000                   // ⏱️ กำหนดเวลา Timeout 10 วินาที
 });
 function AuthedApp() {
   const { user, logout } = useAuth();
